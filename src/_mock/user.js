@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { sample } from "lodash";
+import { random, sample } from "lodash";
 import db from "../firebase";
 // ----------------------------------------------------------------------
 
@@ -12,6 +12,7 @@ export const getUserData = async () => {
       tips.forEach((tip) => res.push(tip.data()));
     });
   console.log(res.length, "fetched from tips", res);
+  console.log("UserList res", res);
   return res;
 };
 
@@ -29,7 +30,7 @@ var users = [...Array(24)].map((_, index) => ({
     "JUHU Versova",
     "KANDIVALI",
   ]),
-
+  score: random(10, 100, false).toString(),
   isVerified: faker.datatype.boolean(),
   status: sample(["Successfully Solved", "In-Progress", "rejected"]),
   description: sample([

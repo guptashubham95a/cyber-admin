@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { filter } from "lodash";
+import { filter, random } from "lodash";
 import { sentenceCase } from "change-case";
 import { useEffect, useState } from "react";
 // @mui
@@ -28,18 +28,22 @@ import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
 // sections
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
+import db from "../firebase";
+import { getTips, modifyTipStatus } from "../service/api";
 // mock
-import USERLIST from "../_mock/user";
+import users from "../_mock/user";
 import { getUserData } from "../_mock/user";
+import { element } from "prop-types";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "name", label: "Name", alignRight: false },
+  { id: "contact", label: "Contact", alignRight: false },
   { id: "place", label: "Place", alignRight: false },
   { id: "id", label: "Tip Id", alignRight: false },
   { id: "description", label: "Description", alignRight: false },
-  { id: "isVerified", label: "Verified", alignRight: false },
+  { id: "surveyed", label: "Surveyed", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
+  { id: "score", label: "Tip-Off Score", alignRight: false },
   { id: "" },
 ];
 
@@ -91,7 +95,23 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [userList, setUserList] = useState([]);
+  const [USERLIST, setUSERLIST] = useState([]);
+  const [selectedTipId, setSelectedTipId] = useState("");
+
+  const handleUserDataChange = async (id, status) => {
+    const index = USERLIST.findIndex((element) => {
+      return element.id === id;
+    });
+    USERLIST[index].status = status;
+    setOpen(false);
+    setUSERLIST([...USERLIST]);
+    console.log("handleUserDataChange modifyTipStatus", id, status);
+    await modifyTipStatus({
+      _id: id,
+      status: status,
+    });
+    console.log("changed status", id, status);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -147,12 +167,59 @@ export default function UserPage() {
     setPage(0);
     setFilterName(event.target.value);
   };
+  const getUserData = async () => {
+    const res = [];
+    await db
+      .collection("tips")
+      .get()
+      .then((tips) => {
+        tips.forEach((tip) => res.push(tip.data()));
+      });
+    console.log(res.length, "fetched from tips", res);
+    console.log("UserList res", res);
+    setUSERLIST(res);
+    console.log("USERLIST-->", USERLIST);
+    return res;
+  };
 
-  // useEffect(async () => {
-  //   const res = await getUserData();
-  //   console.log("UserList res", res);
-  //   setUserList(res);
-  // }, []);
+  const getTipsFromMongoDb = async () => {
+    const res = await getTips();
+    // console.log("gotTipsFromMongoDb-->", res);
+    const tips = [
+      ...res.map((tip, index) => {
+        const t =
+          tip.score >= "0" && tip.score <= "9" ? Math.round(tip.score) : 0;
+        return {
+          id: tip._id,
+          Contact: tip.contact,
+          avatarUrl: `/assets/images/avatars/avatar_${(index + 1) % 10}.jpg`,
+          score: t,
+          status: tip.status ?? "pending",
+          title: tip.title,
+          crimeType: tip.typeofcrime,
+          description: tip.desc,
+          surveyed: t > "0" ? "YES" : "NO",
+          contact: tip.contact,
+          location: tip.location,
+        };
+      }),
+    ];
+    setUSERLIST(tips);
+    console.log("USERLIST-->", USERLIST);
+    console.log("gotTipsFromMongoDb-->", tips);
+  };
+  useEffect(() => {
+    // console.log("useEffect getUserData");
+    // const res = getUserData();
+    console.log("MongoDb getTipsFromMongoDb");
+    const r = getTipsFromMongoDb();
+
+    // const res = modifyTipStatus({
+    //   _id: "633fa5b8ff859612678d9111",
+    //   status: "Solved",
+    // });
+    // console.log("After useEffect getUserData", USERLIST);
+  }, []);
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
@@ -213,15 +280,15 @@ export default function UserPage() {
                     .map((row) => {
                       const {
                         id,
-                        name,
+                        contact,
                         description,
                         status,
+                        score,
                         place,
                         avatarUrl,
-                        isVerified,
+                        surveyed,
                       } = row;
-                      const selectedUser = selected.indexOf(name) !== -1;
-
+                      const selectedUser = selected.indexOf(contact) !== -1;
                       return (
                         <TableRow
                           hover
@@ -229,11 +296,15 @@ export default function UserPage() {
                           tabIndex={-1}
                           role='checkbox'
                           selected={selectedUser}
+                          onClick={() => {
+                            setSelectedTipId(id);
+                            console.log("onClick working", id);
+                          }}
                         >
                           <TableCell padding='checkbox'>
                             <Checkbox
                               checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) => handleClick(event, contact)}
                             />
                           </TableCell>
 
@@ -243,9 +314,9 @@ export default function UserPage() {
                               alignItems='center'
                               spacing={2}
                             >
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar alt={contact} src={avatarUrl} />
                               <Typography variant='subtitle2' noWrap>
-                                {name}
+                                {contact}
                               </Typography>
                             </Stack>
                           </TableCell>
@@ -255,9 +326,7 @@ export default function UserPage() {
 
                           <TableCell align='left'>{description}</TableCell>
 
-                          <TableCell align='left'>
-                            {isVerified ? "Yes" : "No"}
-                          </TableCell>
+                          <TableCell align='left'>{surveyed}</TableCell>
 
                           <TableCell align='left'>
                             <Label
@@ -271,7 +340,7 @@ export default function UserPage() {
                               {sentenceCase(status)}
                             </Label>
                           </TableCell>
-
+                          <TableCell align='left'>{score}</TableCell>
                           <TableCell align='right'>
                             <IconButton
                               size='large'
@@ -289,6 +358,67 @@ export default function UserPage() {
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
+                  {/* <Popover
+                    open={Boolean(open)}
+                    anchorEl={open}
+                    onClose={handleCloseMenu}
+                    anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    PaperProps={{
+                      sx: {
+                        p: 1,
+                        width: 140,
+                        "& .MuiMenuItem-root": {
+                          px: 1,
+                          typography: "body2",
+                          borderRadius: 0.75,
+                        },
+                      },
+                    }}
+                  >
+                    <MenuItem
+                      sx={{ color: "green" }}
+                      onClick={() => {
+                        handleUserDataChange(
+                          selectedTipId,
+                          "Successfully Solved"
+                        );
+                        console.log("Solved");
+                      }}
+                    >
+                      <Iconify
+                        icon={"mdi:tick-circle"}
+                        style={{ color: "green" }}
+                        sx={{ mr: 2 }}
+                      />
+                      Solved
+                    </MenuItem>
+
+                    <MenuItem
+                      sx={{ color: "blue" }}
+                      onClick={() => {
+                        handleUserDataChange(selectedTipId, "In Progress");
+                        console.log("In Progress");
+                      }}
+                    >
+                      <Iconify
+                        icon={"mdi:progress-clock"}
+                        // style={{ color: "yellow" }}
+                        sx={{ mr: 2 }}
+                      />
+                      In Progress
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: "error.main" }}
+                      onClick={() => {
+                        handleUserDataChange(selectedTipId, "rejected");
+                        console.log("rejected");
+                      }}
+                    >
+                      <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
+                      Reject
+                    </MenuItem>
+                  </Popover> */}
                 </TableBody>
 
                 {isNotFound && (
@@ -349,14 +479,44 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />
-          Edit
+        <MenuItem
+          sx={{ color: "green" }}
+          onClick={() => {
+            handleUserDataChange(selectedTipId, "Successfully Solved");
+            console.log("Solved");
+          }}
+        >
+          <Iconify
+            icon={"mdi:tick-circle"}
+            style={{ color: "green" }}
+            sx={{ mr: 2 }}
+          />
+          Solved
         </MenuItem>
 
-        <MenuItem sx={{ color: "error.main" }}>
+        <MenuItem
+          sx={{ color: "blue" }}
+          onClick={() => {
+            handleUserDataChange(selectedTipId, "In Progress");
+            console.log("In Progress");
+          }}
+        >
+          <Iconify
+            icon={"mdi:progress-clock"}
+            // style={{ color: "yellow" }}
+            sx={{ mr: 2 }}
+          />
+          In Progress
+        </MenuItem>
+        <MenuItem
+          sx={{ color: "error.main" }}
+          onClick={() => {
+            handleUserDataChange(selectedTipId, "rejected");
+            console.log("rejected");
+          }}
+        >
           <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
-          Delete
+          Reject
         </MenuItem>
       </Popover>
     </>
