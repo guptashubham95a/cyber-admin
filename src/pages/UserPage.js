@@ -204,8 +204,37 @@ export default function UserPage() {
         };
       }),
     ];
-    setUSERLIST(tips);
-    console.log("USERLIST-->", USERLIST);
+
+    let user = localStorage.getItem("tip_admin");
+    let arr = user.split(" ");
+    let latiude2 = Number(arr[0].replace("latiude:", ""));
+    let longitude2 = Number(arr[1].replace("longitude:", ""));
+    let locationbasedtip = [];
+    tips.map((te) => {
+      let arr1 = te?.location.split(" ");
+      let latiude1 = Number(arr1[0].replace("latiude:", ""));
+      let longitude1 = Number(arr1[2]);
+      let r = 6371e3;
+      let pi1 = (latiude1 * Math.PI) / 180;
+      let pi2 = (latiude2 * Math.PI) / 180;
+      let differentinpi = ((latiude2 - latiude1) * Math.PI) / 180;
+      let differentinlambda = ((longitude2 - longitude1) * Math.PI) / 180;
+      let a =
+        Math.sin(differentinpi / 2) * Math.sin(differentinpi / 2) +
+        Math.cos(pi1) *
+          Math.cos(pi2) *
+          Math.sin(differentinlambda / 2) *
+          Math.sin(differentinlambda / 2);
+      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let distance = r * c;
+
+      console.log(distance);
+      if (distance < 3000) {
+        locationbasedtip.push(te);
+      }
+    });
+    setUSERLIST(locationbasedtip);
+    console.log("USERLIST-->", locationbasedtip);
     console.log("gotTipsFromMongoDb-->", tips);
   };
   useEffect(() => {

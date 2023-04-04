@@ -26,11 +26,11 @@ const navConfig = [
   //   path: "/dashboard/products",
   //   icon: icon("ic_cart"),
   // },
-  {
-    title: "Shared Tips",
-    path: "/dashboard/app",
-    icon: icon("ic_blog"),
-  },
+  // {
+  //   title: "Shared Tips",
+  //   path: "/dashboard/app",
+  //   icon: icon("ic_blog"),
+  // },
   {
     title: "Logout",
     path: "/login",

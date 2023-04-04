@@ -52,7 +52,7 @@ export default function Nav({ openNav, onCloseNav }) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, localStorage.getItem("admin_name")]);
 
   const renderContent = (
     <Scrollbar
@@ -76,7 +76,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant='subtitle2' sx={{ color: "text.primary" }}>
-                {account.displayName}
+                {localStorage.getItem("tip_admin_name")}
               </Typography>
 
               <Typography variant='body2' sx={{ color: "text.secondary" }}>

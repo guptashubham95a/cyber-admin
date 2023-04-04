@@ -2,7 +2,7 @@
 
 const account = {
   displayName: "Admin official",
-  email: "admin123@gmail.com",
+  email: localStorage.getItem("admin_name"),
   photoURL: "/assets/images/avatars/avatar_default.jpg",
 };
 
