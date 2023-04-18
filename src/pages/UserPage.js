@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { filter, random } from "lodash";
+import { filter, forEach, random } from "lodash";
 import { sentenceCase } from "change-case";
 import { useEffect, useState } from "react";
 // @mui
@@ -38,12 +38,15 @@ import { element } from "prop-types";
 
 const TABLE_HEAD = [
   { id: "contact", label: "Contact", alignRight: false },
-  { id: "place", label: "Place", alignRight: false },
+  { id: "title ", label: "Title ", alignRight: false },
+  { id: "crimeType ", label: "Crime Type ", alignRight: false },
   { id: "id", label: "Tip Id", alignRight: false },
   { id: "description", label: "Description", alignRight: false },
   { id: "surveyed", label: "Surveyed", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "score", label: "Tip-Off Score", alignRight: false },
+  { id: "place", label: "Place", alignRight: false },
+
   { id: "" },
 ];
 
@@ -75,7 +78,65 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => {
+        if (_user.Contact.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          console.log(
+            " _user.Contact[i] ",
+            _user.Contact.toLowerCase(),
+            "query searching->",
+            _user.Contact.toLowerCase().indexOf(query.toLowerCase())
+          );
+          return true;
+        } else if (_user.id.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          return true;
+        } else if (
+          _user.title.toLowerCase().indexOf(query.toLowerCase()) >= 0
+        ) {
+          return true;
+        } else if (
+          _user.crimeType.toLowerCase().indexOf(query.toLowerCase()) >= 0
+        ) {
+          return true;
+        } else if (
+          _user.status.toLowerCase().indexOf(query.toLowerCase()) >= 0
+        ) {
+          return true;
+        } else if (
+          _user.surveyed.toLowerCase().indexOf(query.toLowerCase()) >= 0
+        ) {
+          return true;
+        } else if (
+          _user.description.toLowerCase().indexOf(query.toLowerCase()) >= 0
+        ) {
+          return true;
+        }
+      }
+      // {
+      //   const showingDataCol = [
+      //     "Contact",
+      //     "id",
+      //     "score",
+      //     "surveyed",
+      //     "title",
+      //     "status",
+      //     "description",
+      //     "crimeType",
+      //   ];
+      //   // if(_user.description.toLowerCase().indexOf(query.toLowerCase())) return true
+      //   for (var i = 0; i < showingDataCol.length; i++) {
+      //     if (
+      //       _user[showingDataCol[i]].toLowerCase().indexOf(query.toLowerCase())
+      //     ) {
+      //       console.log(
+      //         " _user.showingDataCol[i] ",
+      //         _user.showingDataCol[i],
+      //         "query searching->",
+      //         query.toLowerCase()
+      //       );
+      //       return true;
+      //     }
+      //   }
+      // }
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -165,6 +226,7 @@ export default function UserPage() {
 
   const handleFilterByName = (event) => {
     setPage(0);
+    console.log("setFilterName", event.target.value);
     setFilterName(event.target.value);
   };
   const getUserData = async () => {
@@ -257,7 +319,7 @@ export default function UserPage() {
     getComparator(order, orderBy),
     filterName
   );
-
+  console.log("filteredUsers-->", filteredUsers);
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
@@ -313,11 +375,13 @@ export default function UserPage() {
                         description,
                         status,
                         score,
-                        place,
+                        location,
                         avatarUrl,
                         surveyed,
+                        title,
+                        crimeType,
                       } = row;
-                      const selectedUser = selected.indexOf(contact) !== -1;
+                      const selectedUser = selected.indexOf(id) !== -1;
                       return (
                         <TableRow
                           hover
@@ -349,8 +413,8 @@ export default function UserPage() {
                               </Typography>
                             </Stack>
                           </TableCell>
-
-                          <TableCell align='left'>{place}</TableCell>
+                          <TableCell align='left'>{title}</TableCell>
+                          <TableCell align='left'>{crimeType}</TableCell>
                           <TableCell align='left'>{id}</TableCell>
 
                           <TableCell align='left'>{description}</TableCell>
@@ -370,6 +434,7 @@ export default function UserPage() {
                             </Label>
                           </TableCell>
                           <TableCell align='left'>{score}</TableCell>
+                          <TableCell align='left'>{location}</TableCell>
                           <TableCell align='right'>
                             <IconButton
                               size='large'
