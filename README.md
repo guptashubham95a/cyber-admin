@@ -8,7 +8,7 @@ The Cyber Admin is a web-based admin platform designed to facilitate the anonymo
 ## Additional Repositories
 
 ### CyberTipoff System Platform
-The second platform for police authorities is available at [CyberTipoff System Platform Repository](https://github.com/guptashubham95a/CyberTipoff-System)
+The second platform which is used for reporting crimes is available at [CyberTipoff System Platform Repository](https://github.com/guptashubham95a/CyberTipoff-System)
 
 
 ## Features
