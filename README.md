@@ -1,10 +1,55 @@
-# Getting Started with Create React App
+# Cyber Tip-Off System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+The Cyber Admin is a web-based crime-reporting platform designed to facilitate the anonymous submission of tips to the nearest police authorities, helping to mitigate crime rates. The system consists of two platforms: one for common users to report crimes and another for police authorities to manage and investigate these reports.
 
-## Available Scripts
+
+
+## Additional Repositories
+
+### CyberTipoff System Platform
+The second platform for police authorities is available at [CyberTipoff System Platform Repository](https://github.com/guptashubham95a/CyberTipoff-System)
+
+
+## Features
+
+
+
+### Police Authority(Cyber Admin) Platform
+- **Report Access:** View and manage reported crimes.
+- **Transfer tips:** Transfer tips to the relevant police station.
+- **filter reports:** filtering based on trust scores, status, location, etc.
+- **Data Visualization:** Insights through metrics such as trust scores, total reports, and location-wise statistics.
+- **Real-Time Notifications:** Instant alerts for prompt action.
+- **Dashboard:** Comprehensive data dashboard for informed decision-making.
+- 
+### User Platform(CyberTipoff System)
+- **Anonymous Tip Submission:** Users can report crimes anonymously.
+- **OTP Authentication:** Secure submission of tips.
+- **Feature Set:** Transfer tips, manage to-do lists, and track trust scores.
+
+
+### General Features
+- **API Development:** Facilitates communication and report management with OTP authentication.
+- **Real-Time Push Notifications:** Cloud messaging for quick alerts.
+- **Data Metrics:** Trust scores, total reports, location-wise statistics, and categories.
+- **Collaboration with Authorities:** Insights from police procedures to enhance system design.
+- **Google Cloud Platform Integration:** The project utilizes Google Cloud Platform for various services such as map integration, geolocation, and reverse geocoding. This integration enhances the user experience by providing location-based features and services.
+
+## Technologies Used
+- **Frontend:** React.js,...
+- **Backend:** Python, Django, Node.js,...
+- **Database:** MongoDB, Firebase,...
+- **Authentication & Notifications:** Firebase,...
+- **geolocation, maps:** GCP,...
+- 
+## To run the code
 
 In the project directory, you can run:
+
+### `npm config set legacy-peer-deps true`
+
+### `npm npm install`
 
 ### `npm start`
 
@@ -29,42 +74,4 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Technologies Used
