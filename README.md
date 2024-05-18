@@ -1,7 +1,7 @@
-# Cyber Tip-Off System
+# Cyber Admin
 
 ## Overview
-The Cyber Admin is a web-based crime-reporting platform designed to facilitate the anonymous submission of tips to the nearest police authorities, helping to mitigate crime rates. The system consists of two platforms: one for common users to report crimes and another for police authorities to manage and investigate these reports.
+The Cyber Admin is a web-based admin platform designed to facilitate the anonymous submission of tips to the nearest police authorities, helping to mitigate crime rates. The system consists of two platforms: one for common users to report crimes and another for police authorities to manage and investigate these reports.
 
 
 
