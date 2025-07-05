@@ -42,7 +42,31 @@ The second platform which is used for reporting crimes is available at [CyberTip
 - **Database:** MongoDB, Firebase,...
 - **Authentication & Notifications:** Firebase,...
 - **geolocation, maps:** GCP,...
-- 
+
+## Screenshots
+
+<p align="center">
+  <img src="login.jpg" alt="Login Screenshot" width="70%" />
+</p>
+
+<p align="center">
+  <img src="Dashboard.jpg" alt="Dashboard Screenshot" width="70%" />
+</p>
+
+<p align="center">
+  <img src="Dashboard3.jpg" alt="Dashboard Screenshot 2" width="70%" />
+</p>
+
+
+<p align="center">
+  <img src="notifications.jpg" alt="Notifications Screenshot" width="70%" />
+</p>
+
+<p align="center">
+  <img src="prize.jpg" alt="Prize Screenshot" width="70%" />
+</p>
+
+
 ## To run the code
 
 In the project directory, you can run:
