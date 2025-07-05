@@ -43,7 +43,11 @@ The second platform which is used for reporting crimes is available at [CyberTip
 - **Authentication & Notifications:** Firebase,...
 - **geolocation, maps:** GCP,...
 
-## Screenshots
+## Demo
+
+<p align="center">
+  <img src="prize.jpg" alt="Prize Screenshot" width="70%" />
+</p>
 
 <p align="center">
   <img src="login.jpg" alt="Login Screenshot" width="70%" />
@@ -62,9 +66,7 @@ The second platform which is used for reporting crimes is available at [CyberTip
   <img src="notifications.jpg" alt="Notifications Screenshot" width="70%" />
 </p>
 
-<p align="center">
-  <img src="prize.jpg" alt="Prize Screenshot" width="70%" />
-</p>
+
 
 
 ## To run the code
